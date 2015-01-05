@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import walkdo
 import string
 import os
