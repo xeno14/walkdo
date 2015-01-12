@@ -3,6 +3,12 @@ walkdo
 
 Walk the directory tree and bring to new place.
 
+# Install
+
+```sh
+python setup.py install
+```
+
 # Example
 
 ```sh
