@@ -74,12 +74,19 @@ def _start_impl(cmd, src, dst):
     funcs = _Funcs.instance()
 
     # Loop for all files and all destinations
-    for dstdir, func in funcs._dest_funcs.iteritems():
+    for dstdir, dst_func in funcs._dest_funcs.iteritems():
         for root, filename in files:
-            if func(root, filename):
+            subdst = dst_func(root, filename)
+            if isinstance(subdst, bool):
+                subdst = "."
+            if dst_func(root, filename):
                 newname = funcs._name_funcs[-1](root, filename)
-                dstpath = os.path.join(dst, dstdir, newname)
+                dstpath = os.path.join(dst, dstdir, subdst, newname)
                 srcpath = os.path.join(root, filename)
+
+                # normalize
+                dstpath = os.path.normpath(dstpath)
+                srcpath = os.path.normpath(srcpath)
                 if FLAGS.dryrun:
                     _dryrun(srcpath, dstpath)
                 else:
