@@ -1,12 +1,13 @@
 import gflags
 import os
+import shutil
 
 FLAGS = gflags.FLAGS
 
 gflags.DEFINE_string("src",  None, "source directory")
 gflags.DEFINE_string("dest", None, "destination directory")
 gflags.DEFINE_bool("dryrun", False, "dryrun")
-gflags.DEFINE_enum("cmd", None, ["link", "symlink"], "command")
+gflags.DEFINE_enum("cmd", None, ["link", "symlink", "cp"], "command")
 gflags.MarkFlagAsRequired("src")
 gflags.MarkFlagAsRequired("dest")
 gflags.MarkFlagAsRequired("cmd")
@@ -24,7 +25,8 @@ class _Funcs(object):
 
         self._commands = dict(
             link=os.link,
-            symlink=os.symlink
+            symlink=os.symlink,
+            cp=shutil.copyfile
         )
 
     def add_dest(self, d, func):
